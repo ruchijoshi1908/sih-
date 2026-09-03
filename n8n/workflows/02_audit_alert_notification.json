@@ -1,0 +1,89 @@
+{
+  "name": "02 - Curriculum Drift Alert & Employer Validation Dispatch",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "audit-alert-webhook",
+        "options": {}
+      },
+      "id": "node-webhook-trigger",
+      "name": "Audit Completed Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.body.drift_score }}",
+              "operation": "largerEqual",
+              "value2": 50
+            }
+          ]
+        }
+      },
+      "id": "node-check-drift",
+      "name": "Drift Score >= 50%?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#curriculum-alerts",
+        "text": "=⚠️ *High Curriculum Drift Alert!*\n\nCourse: *{{ $json.body.course_name }}*\nDrift Score: *{{ $json.body.drift_score }}% (Outdated)*\nMissing High-Demand Skills: {{ $json.body.missing_skills.join(', ') }}\n\nAction Required: Employer validation requested. Review at http://localhost:5173/employer",
+        "otherOptions": {}
+      },
+      "id": "node-slack-alert",
+      "name": "Send Slack Alert to Employers",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [720, 200]
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@curriculum-alignment.edu",
+        "toEmail": "employers@partnernetwork.org",
+        "subject": "=Action Needed: Validate {{ $json.body.course_name }} Curriculum Changes",
+        "text": "=Dear Partner Employer,\n\nOur Labour Market Intelligence system detected significant curriculum drift in {{ $json.body.course_name }} (Drift Score: {{ $json.body.drift_score }}%).\n\nPlease validate proposed recommendations for {{ $json.body.missing_skills.join(', ') }} at: http://localhost:5173/employer\n\nThank you,\nCurriculum Alignment Board"
+      },
+      "id": "node-email-dispatch",
+      "name": "Email Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [720, 400]
+    }
+  ],
+  "connections": {
+    "Audit Completed Webhook": {
+      "main": [
+        [
+          {
+            "node": "Drift Score >= 50%?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drift Score >= 50%?": {
+      "main": [
+        [
+          {
+            "node": "Send Slack Alert to Employers",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

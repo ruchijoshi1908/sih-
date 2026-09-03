@@ -1,0 +1,32 @@
+COURSE SYLLABUS: WEB APPLICATION DEVELOPMENT
+Course Code: WEB-101
+Curriculum Version: 1.0
+Academic Term: Semester 3
+
+Course Overview:
+Fundamentals of building static and server-rendered web pages.
+
+Module 1: Web Fundamentals & Mark-up
+- HTML 4.01 / HTML5 document structure and tags
+- CSS styling, box model, floats, tables for layout
+- Responsive layout basics with media queries
+
+Module 2: Client-side Scripting
+- Core JavaScript syntax (ES5), DOM manipulation
+- Event listeners, form validations
+- Introduction to jQuery for DOM handling and AJAX calls
+
+Module 3: Server-side Scripting with PHP
+- PHP syntax, GET and POST request processing
+- Session management, cookies, and authentication
+- File handling and email sending with PHP
+
+Module 4: Relational Databases & CMS
+- MySQL basics and phpMyAdmin operations
+- CRUD operations with PHP MySQLi extension
+- WordPress installation and theme customization
+
+Term Practicals:
+- Lab 1: Personal portfolio website in HTML and CSS
+- Lab 2: Dynamic form validation with jQuery
+- Lab 3: PHP/MySQL student record management system

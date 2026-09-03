@@ -1,0 +1,41 @@
+COURSE SYLLABUS: APPLIED DATA SCIENCE & ANALYTICS
+Course Code: DS-201
+Curriculum Version: 1.0
+Academic Term: Semester 4
+
+Course Overview:
+This course introduces students to the fundamentals of data science, predictive modeling, and computational statistics.
+
+Module 1: Introduction to Programming with Python
+- Python syntax, variables, conditional statements, and loops
+- Data structures: Lists, Tuples, Dictionaries, Sets
+- Functional programming and object-oriented basics in Python
+- Working with NumPy arrays and mathematical operations
+
+Module 2: Legacy Computing & Systems (C Programming)
+- Memory management and pointers in C
+- Procedural algorithms and file I/O operations in C language
+- Data structures implementation: Linked lists, stacks, and binary trees in C
+
+Module 3: Mathematics and Statistics for Data Science
+- Descriptive statistics: Mean, median, mode, variance, standard deviation
+- Probability distributions: Normal, Binomial, Poisson
+- Hypothesis testing: t-test, chi-square test, ANOVA
+- Linear algebra: Matrix operations, eigenvalues, eigenvectors
+
+Module 4: Machine Learning Fundamentals
+- Supervised learning: Linear Regression, Logistic Regression, Decision Trees
+- Unsupervised learning: K-Means Clustering, Principal Component Analysis (PCA)
+- Model evaluation: Confusion matrix, Precision, Recall, F1-Score
+- Scikit-Learn library implementations and hyperparameter tuning
+
+Module 5: Exploratory Data Analysis & Visualization
+- Data manipulation with Pandas DataFrames
+- Static charting using Matplotlib and Seaborn
+- Handling missing data and outlier detection techniques
+
+Lab Practicals & Term Projects:
+- Lab 1: Python data structures exercise
+- Lab 2: C language pointer manipulation
+- Lab 3: Boston Housing price prediction using Linear Regression in Scikit-Learn
+- Lab 4: Iris dataset classification with Decision Trees

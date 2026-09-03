@@ -1,0 +1,102 @@
+{
+  "name": "01 - Job Market Ingestion & AI Skill Extractor",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "node-schedule-trigger",
+      "name": "Schedule Trigger (Daily)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.adzuna.com/v1/api/jobs/in/search/1",
+        "options": {
+          "queryParametersUi": {
+            "parameter": [
+              {
+                "name": "what",
+                "value": "data science OR python OR web developer"
+              }
+            ]
+          }
+        }
+      },
+      "id": "node-fetch-jobs",
+      "name": "Fetch Latest Job Postings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transform and clean scraped jobs\nconst items = $input.all();\nreturn items.map(item => ({\n  json: {\n    title: item.json.title || 'Data Analyst',\n    company: item.json.company?.display_name || 'TechCorp',\n    location: item.json.location?.display_name || 'Bengaluru, India',\n    role_category: 'Data Science',\n    description: item.json.description || 'Proficient in Python, SQL, and Power BI.',\n    source: 'n8n Scheduled Ingestion'\n  }\n}));"
+      },
+      "id": "node-format-data",
+      "name": "Transform & Normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/n8n/trigger-job-sync",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $input.all().map(i => i.json) }}",
+        "options": {}
+      },
+      "id": "node-send-to-backend",
+      "name": "Send to Platform Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Daily)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Latest Job Postings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Latest Job Postings": {
+      "main": [
+        [
+          {
+            "node": "Transform & Normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform & Normalize": {
+      "main": [
+        [
+          {
+            "node": "Send to Platform Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
